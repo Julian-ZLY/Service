@@ -125,7 +125,7 @@ function install_zabbix() {
     # DBName=zabbix
     # DBUser=zabbix
     # DBPassword='pass'
-    sed -i 's/.*DBPassword=.*/DBPassword=123456' ${ZABBIX_CONF_PATH}
+    sed -i 's/.*DBPassword=.*/DBPassword=123456/' ${ZABBIX_CONF_PATH}
 } 
 
 install_zabbix 
