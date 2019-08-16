@@ -18,21 +18,24 @@ function zabbix_sql() {
 
 
 ########################
-# 检测运行环境         # 
+#     检测运行环境     # 
 ########################
 function get_tar_file() {
     
     rpm -q wget || yum -y install wget  
 
-    wget https://github.com/Julian-ZLY/Yum_repo/raw/master/nginx-1.12.2.tar.gz -P /opt 
-    wget https://github.com/Julian-ZLY/Yum_repo/raw/master/zabbix-3.4.4.tar.gz -P /opt 
-    
     # 查找本机nginx源码包 
     nginx_tar=`find / -name nginx*.tar.* | awk 'END{print $NF}'`
-    [ -z "${nginx_tar}" ] && echo "本机未找到NGIXN源码包`exit 0`"
+    if [ -z "${nginx_tar}" ]; then 
+        wget https://github.com/Julian-ZLY/Yum_repo/raw/master/nginx-1.12.2.tar.gz -P /opt 
+	[ ! $? -eq 0 ] && echo -e "\033[31m\t下载失败;请检查网络是否通畅...\033[0m" ; exit 1 
+    fi 
     
     zabbix_tar=`find / -name zabbix*.tar.* | awk 'END{print $NF}'`
-    [ -z "${zabbix_tar}" ] &&  echo "本机未找到Zabbix源码包`exit 0`"
+    if [ -z "${zabbix_tar}" ]; then
+        wget https://github.com/Julian-ZLY/Yum_repo/raw/master/zabbix-3.4.4.tar.gz -P /opt 
+	[ ! $? -eq 0 ] && echo -e "\033[31m\t下载失败;请检查网络是否通畅...\033[0m" ; exit 1 
+    fi 
 
 }
 
@@ -40,9 +43,9 @@ get_tar_file
 
 
 
-#####################
-#  部署LNMP环境	    # 
-##################### 
+#######################
+#    部署LNMP环境     # 
+####################### 
 function install_lnmp() {
     
     # LNMP所需要软件包
@@ -97,9 +100,9 @@ install_lnmp
 
 
 
-######################
-# 源码安装zabbix     # 
-######################
+#########################
+#    源码安装zabbix     # 
+#########################
 function install_zabbix() { 
 
     # zabbix依赖包
@@ -136,6 +139,7 @@ install_zabbix
 function prepare_database() { 
 
     systemctl restart mariadb 
+    systemctl enable  mariadb 
     
     # 修改数据库密码
     mysql -e 'set password=password("123456");'
@@ -157,7 +161,7 @@ prepare_database
 
 
 ######################
-# 上线zabbix页面     # 
+#   上线zabbix页面   # 
 ###################### 
 function on_line_web() { 
 
@@ -187,9 +191,9 @@ on_line_web
 
 
 
-####################
-# 启动服务         #
-####################
+#####################
+#     启动服务      #
+#####################
 function start_service() {
 
     yum -y install php-gd php-xml php-ldap php-bcmath php-mbstring 
@@ -204,16 +208,11 @@ function start_service() {
     # 启动php服务
     systemctl restart php-fpm 
     systemctl enable php-fpm 
-     
+
+    # 检测服务
+    sleep 1; clear 
+    netstat -ntupl 
 }
 
-
 start_service 
-
-
-
-
-
-
-
 
