@@ -34,7 +34,7 @@ function get_tar_file() {
     zabbix_tar=`find / -name zabbix*.tar.* | awk 'END{print $NF}'`
     if [ -z "${zabbix_tar}" ]; then
         wget https://github.com/Julian-ZLY/Yum_repo/raw/master/zabbix-3.4.4.tar.gz -P /opt 
-	[  $? -eq 0 ] && echo -e "\033[31m\t下载失败;请检查网络是否通畅...\033[0m" ; exit 1 
+        [  $? -ne 0 ] && echo -e "\033[31m\t下载失败;请检查网络是否通畅...\033[0m`exit 1`"
     fi 
 
 }
