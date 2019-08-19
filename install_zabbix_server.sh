@@ -34,12 +34,14 @@ function get_tar_file() {
     if [ -z "${nginx_tar}" ]; then 
         wget https://github.com/Julian-ZLY/Yum_repo/raw/master/nginx-1.12.2.tar.gz -P /opt 
         [  $? -ne 0 ] && echo -e "\033[31m\t下载失败;请检查网络是否通畅...\033[0m`exit 1`"
+	nginx_tar='/opt/nginx-1.12.2.tar.gz'
     fi 
     
     zabbix_tar=`find / -name zabbix*.tar.* | awk 'END{print $NF}'`
     if [ -z "${zabbix_tar}" ]; then
         wget https://github.com/Julian-ZLY/Yum_repo/raw/master/zabbix-3.4.4.tar.gz -P /opt 
         [  $? -ne 0 ] && echo -e "\033[31m\t下载失败;请检查网络是否通畅...\033[0m`exit 1`"
+        zabbix_tar='/opt/zabbix-3.4.4.tar.gz'
     fi 
 
 }
