@@ -1,13 +1,20 @@
 #! /bin/bash 
 
 
+#########################################################
+# 运行环境: 	CentOS Linux 7.x 			#
+# 作	者: 	小伙计					# 
+# 邮	箱: 	Julian_cn@126.com  			# 
+# Github  : 	https://www.github.com/Julian-ZLY	#
+#########################################################
+
+
+
 NGINX_PATH='/usr/local/nginx'
 ZABBIX_CONF_PATH='/usr/local/etc/zabbix_server.conf'
 
 
-##########################
-#  操作MySQL数据库函数   #
-##########################
+# 操作MySQL数据库函数   
 function sql() { 
     mysql -uroot -p123456 -e "$1"
 } 
@@ -17,9 +24,7 @@ function zabbix_sql() {
 } 
 
 
-########################
-#     检测运行环境     # 
-########################
+# 检测运行环境      
 function get_tar_file() {
     
     rpm -q wget || yum -y install wget  
@@ -43,9 +48,7 @@ get_tar_file
 
 
 
-#######################
-#    部署LNMP环境     # 
-####################### 
+# 部署LNMP环境     
 function install_lnmp() {
     
     # LNMP所需要软件包
@@ -100,9 +103,7 @@ install_lnmp
 
 
 
-#########################
-#    源码安装zabbix     # 
-#########################
+# 源码安装zabbix     
 function install_zabbix() { 
 
     # zabbix依赖包
@@ -160,9 +161,7 @@ prepare_database
 
 
 
-######################
-#   上线zabbix页面   # 
-###################### 
+# 上线zabbix页面    
 function on_line_web() { 
 
     # 进入zabbix PHP动态网页路径拷贝数据
@@ -191,9 +190,7 @@ on_line_web
 
 
 
-#####################
-#     启动服务      #
-#####################
+# 启动服务      
 function start_service() {
 
     yum -y install php-gd php-xml php-ldap php-bcmath php-mbstring 
